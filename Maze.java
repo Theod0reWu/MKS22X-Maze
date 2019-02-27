@@ -18,16 +18,32 @@ public class Maze{
       2. The maze has a border of '#' around the edges. So you don't have to check for out of bounds!
 
 
-      3. When the file is not found OR the file is invalid (not exactly 1 E and 1 S) then: 
+      3. When the file is not found OR the file is invalid (not exactly 1 E and 1 S) then:
 
          throw a FileNotFoundException or IllegalStateException
 
     */
 
     public Maze(String filename) throws FileNotFoundException{
-        //COMPLETE CONSTRUCTOR
+      File text = new File(filename);
+      // can be a path like: "/full/path/to/file.txt" or "../data/file.txt"
+      Scanner inf = new Scanner(text);
+      String data = "";
+      data += inf.nextLine();
+      int cols = data.length(); int rows=0; data+="\n";
+      while(inf.hasNextLine()){
+         data += inf.nextLine() + "\n";
+         rows++;
+      }
+
+      maze = new char[rows][cols];
+      for (int r = 0; r < rows; r++){
+        for (int l = 0; l < cols; l++){
+          maze[r][l] = data
+        }
+      }
     }
-    
+
 
     private void wait(int millis){
          try {
@@ -63,7 +79,7 @@ public class Maze{
     */
     public int solve(){
 
-            //find the location of the S. 
+            //find the location of the S.
 
 
             //erase the S
@@ -72,7 +88,7 @@ public class Maze{
             //and start solving at the location of the s.
 
             //return solve(???,???);
-
+            return 1;
     }
 
     /*
@@ -108,6 +124,8 @@ public class Maze{
 
         return -1; //so it compiles
     }
-
+    public static void main(String[] args) throws FileNotFoundException{
+      Maze m = new Maze("Maze1.txt");
+    }
 
 }
