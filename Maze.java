@@ -44,7 +44,6 @@ public class Maze{
       }
       return out;
     }
-
     private void wait(int millis){
          try {
              Thread.sleep(millis);
@@ -52,36 +51,17 @@ public class Maze{
          catch (InterruptedException e) {
          }
      }
-
-
     public void setAnimate(boolean b){
         animate = b;
     }
     public void clearTerminal(){
         System.out.println("\033[2J\033[1;1H");
     }
-    /*Wrapper Solve Function returns the helper function
-      Note the helper function has the same name, but different parameters.
-      Since the constructor exits when the file is not found or is missing an E or S, we can assume it exists.
-    */
     public int solve(){
       solve(start[0], start[1]); //System.out.println(maze[start[0]][start[1]]);
       return 1;
     }
-    /*
-      Recursive Solve function:
-      A solved maze has a path marked with '@' from S to E.
-      Returns the number of @ symbols from S to E when the maze is solved,
-      Returns -1 when the maze has no solution.
-      Postcondition:
-
-        The S is replaced with '@' but the 'E' is not.
-
-        All visited spots that were not part of the solution are changed to '.'
-
-        All visited spots that are part of the solution are changed to '@'
-    */
-    private boolean solve(int row, int col){ //you can add more parameters since this is private
+    private boolean solve(int row, int col){
         if(animate){
             clearTerminal();
             System.out.println(this);
@@ -100,7 +80,7 @@ public class Maze{
         return false;
     }
     public static void main(String[] args) throws FileNotFoundException{
-      Maze m = new Maze("Maze1.txt");
+      Maze m = new Maze("Maze3.txt");
       System.out.println(m);
       m.setAnimate(true);
       m.solve();
