@@ -55,11 +55,51 @@ public class Maze{
         animate = b;
     }
     public void clearTerminal(){
-        System.out.println("\033[2J\033[1;1H");
+        //System.out.println("\033[2J\033[1;1H");
     }
     public int solve(){
       solve(start[0], start[1]); //System.out.println(maze[start[0]][start[1]]);
       return steps;
+    }
+    public void shortestPath(){
+      ArrayList<ArrayList<int[]>> paths = new ArrayList<>(); ArrayList<int[]> solution = null;
+      paths.add(new ArrayList<int[]>());
+      paths.get(0).add(new int[]{start[0],start[1]});
+      maze[start[0]][start[1]] = '@';
+      while(paths.size() != 0){
+        if(animate){
+            clearTerminal();
+            System.out.println(this);
+            wait(40);
+        }
+        for(int p = 0; p<paths.size();p++){
+          ArrayList<int[]> path = paths.get(p);
+          ArrayList<Integer> possibleMoves = new ArrayList<>();
+          for (int i = 0; i < 4; i++){
+            int r = path.get(path.size()-1)[0] + x[i];
+            int c = path.get(path.size()-1)[1] + y[i];
+            if (maze[r][c] == ' '){
+              possibleMoves.add(i);
+            }
+            if(maze[r][c] == 'E'){solution = new ArrayList<>(path); paths = new ArrayList<>(); possibleMoves = new ArrayList<>();}
+          }
+          if(possibleMoves.size() == 0 ){if(paths.size() != 0){paths.remove(p);}}
+          else{
+            for(int move = 1; move < possibleMoves.size();move++){
+              ArrayList<int[]> newPath = new ArrayList<int[]>(path);
+              newPath.add(new int[] {path.get(path.size()-1)[0] + x[possibleMoves.get(move)], path.get(path.size()-1)[1] + y[possibleMoves.get(move)]});
+              paths.add(newPath);
+            }
+            path.add(new int[] {path.get(path.size()-1)[0] + x[possibleMoves.get(0)], path.get(path.size()-1)[1] + y[possibleMoves.get(0)]});
+          }
+          maze[path.get(path.size()-1)[0]][path.get(path.size()-1)[1]] = '.';
+        }
+        //break;
+      }
+      for(int[] c:solution){
+        maze[c[0]][c[1]] = '@';
+      }
+      System.out.println("done");
     }
     private boolean solve(int row, int col){
         if(animate){
@@ -80,10 +120,11 @@ public class Maze{
         return false;
     }
     public static void main(String[] args) throws FileNotFoundException{
-      Maze m = new Maze("Maze1.txt");
+      Maze m = new Maze("Maze2.txt");
       //System.out.println(m);
-      //m.setAnimate(true);
-      System.out.println(m.solve());
+      m.setAnimate(true);
+      //System.out.println(m.solve());
+      m.shortestPath();
       System.out.println(m);
     }
 
