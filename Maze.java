@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 public class Maze{
     private char[][]maze;
-    private int rows, cols;
+    private int rows, cols, steps;
     private int[] start = new int[2];
     private boolean animate;//false by default
     private static int[] x = new int[]{0,1,0,-1};
@@ -59,7 +59,7 @@ public class Maze{
     }
     public int solve(){
       solve(start[0], start[1]); //System.out.println(maze[start[0]][start[1]]);
-      return 1;
+      return steps;
     }
     private boolean solve(int row, int col){
         if(animate){
@@ -69,21 +69,21 @@ public class Maze{
         }
         if (maze[row][col] == 'E'){return true;}
         if (maze[row][col] != ' ' && maze[row][col] != 'S'){return false;}
-        maze[row][col] = '@';
+        maze[row][col] = '@'; steps++;
         for(int i = 0; i < 4; i++){
           //System.out.println(i);
           if (solve(row+x[i],col+y[i])){
             return true;
           }
         }
-        maze[row][col] = '.';
+        maze[row][col] = '.'; steps--;
         return false;
     }
     public static void main(String[] args) throws FileNotFoundException{
-      Maze m = new Maze("Maze3.txt");
-      System.out.println(m);
-      m.setAnimate(true);
-      m.solve();
+      Maze m = new Maze("Maze1.txt");
+      //System.out.println(m);
+      //m.setAnimate(true);
+      System.out.println(m.solve());
       System.out.println(m);
     }
 
